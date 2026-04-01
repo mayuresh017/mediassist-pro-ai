@@ -1,0 +1,14 @@
+[
+  {
+    "id": "7f480753985940a6891187e2e4d9f7d7",
+    "name": "mayuresh patil",
+    "email": "mayuresh@gmail.com",
+    "password_hash": "scrypt:32768:8:1$XQeJXwqbodwaMIHT$1862bdf4c5cc87c9f3f1e36ae9d835c9983802e4b6316dee530f487bbe60fd4f22ea3425c02229702b661e51f9fcc750c9e2096d0ca85c8c8972508ff3394be6"
+  },
+  {
+    "id": "61f1859a2ba44e9eb7a60b36ac3ffd51",
+    "name": "harshad hadap",
+    "email": "harshad@gmail.com",
+    "password_hash": "scrypt:32768:8:1$nbNQVWjIfxSR0DDc$365021396b5e17d32752ed0ad108cfb976e1578b98943e8d90daa6fdbc4b921967cff5050ea6b4e0db79701953305e88123e3e8e01e81f7b8fc7c39309aee82c"
+  }
+]

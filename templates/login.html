@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediAssist Pro | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-body">
+  <div class="auth-bg-orb orb-a"></div>
+  <div class="auth-bg-orb orb-b"></div>
+
+  <main class="auth-shell">
+    <section class="auth-hero glass-panel">
+      <div class="hero-chip">AI • Voice • Daily Care</div>
+      <h1>MediAssist Pro</h1>
+      <p>
+        Your smart daily health companion for chat guidance, skin support,
+        BMI tracking, hydration, medicines, and nearby care.
+      </p>
+
+      <div class="hero-points">
+        <div class="hero-point">💬 Multilingual health chat</div>
+        <div class="hero-point">🎙️ Voice input and spoken replies</div>
+        <div class="hero-point">💧 Daily water and medicine tracking</div>
+        <div class="hero-point">📍 Nearby hospitals and pharmacies</div>
+      </div>
+    </section>
+
+    <section class="auth-card glass-panel">
+      <div id="authMessage" class="auth-message hidden"></div>
+
+      <div class="auth-tabs">
+        <button id="showLoginBtn" class="auth-tab active" type="button">Login</button>
+        <button id="showRegisterBtn" class="auth-tab" type="button">Register</button>
+      </div>
+
+      <div id="loginPane" class="auth-pane-visible">
+        <form id="loginForm" class="auth-form">
+          <div class="auth-title-wrap">
+            <h2>Welcome back</h2>
+            <p>Login to continue your health dashboard.</p>
+          </div>
+
+          <label>
+            Email
+            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+          </label>
+
+          <label>
+            Password
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+          </label>
+
+          <button class="primary-btn auth-submit" type="submit">Login</button>
+        </form>
+      </div>
+
+      <div id="registerPane" class="auth-pane-hidden">
+        <form id="registerForm" class="auth-form">
+          <div class="auth-title-wrap">
+            <h2>Create account</h2>
+            <p>Start using MediAssist Pro in a few seconds.</p>
+          </div>
+
+          <label>
+            Full name
+            <input type="text" id="registerName" placeholder="Enter your full name" required>
+          </label>
+
+          <label>
+            Email
+            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+          </label>
+
+          <label>
+            Password
+            <input type="password" id="registerPassword" placeholder="Create a password" required>
+          </label>
+
+          <button class="primary-btn auth-submit" type="submit">Create Account</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

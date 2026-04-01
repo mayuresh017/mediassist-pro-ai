@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediAssist Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="bg-orb orb-one"></div>
+  <div class="bg-orb orb-two"></div>
+  <div class="bg-grid"></div>
+
+  <header class="topbar glass-panel premium-topbar">
+  <div class="brand-block">
+    <div class="brand-row">
+      <div class="hero-badge brand-badge">✨ AI • 🎙 Voice • ❤️ Everyday Health</div>
+      <div class="live-dot-wrap">
+        <span class="live-dot"></span>
+        <span class="live-text">Live Dashboard</span>
+      </div>
+    </div>
+
+    <h1>🩺 MediAssist Pro</h1>
+    <p class="topbar-subtitle">
+      Smarter daily care for chat guidance, skin support, BMI tracking, hydration, medicine planning, and nearby care.
+    </p>
+  </div>
+
+  <div class="topbar-actions topbar-stack">
+    <div class="user-pill premium-user-pill">👤 {{ user_email }}</div>
+
+    <div class="toolbar-panel">
+      <label class="toolbar-label">
+        <span>🌐 Language</span>
+        <select id="languageSelect" class="toolbar-select">
+          {% for code, name in languages.items() %}
+          <option value="{{ code }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <div class="toolbar-row">
+        <button id="themeToggle" class="ghost-btn toolbar-btn">🌙 Theme</button>
+        <button id="clearChatBtn" class="ghost-btn toolbar-btn">🗑 Clear Chat</button>
+        <button id="logoutBtn" class="ghost-btn toolbar-btn logout-btn">↩ Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <main class="layout">
+    <aside class="sidebar glass-panel floating-card" id="sidebar">
+      <div class="sidebar-intro">
+        <h2>🧭 Health Hub</h2>
+        <button id="toggleSidebarBtn" class="toggle-btn">⏪</button>
+        
+        <p>Simple tools you can use every day from one place.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card depth-card">
+          <span>Languages</span>
+          <strong>6+</strong>
+        </div>
+        <div class="stat-card depth-card">
+          <span>Voice Chat</span>
+          <strong>Ready</strong>
+        </div>
+        <div class="stat-card depth-card">
+          <span>Daily Water</span>
+          <strong id="sidebarWaterCount">0 / 8</strong>
+        </div>
+        <div class="stat-card depth-card">
+          <span>Medicines</span>
+          <strong id="sidebarMedicineCount">0 done</strong>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <button class="nav-btn active" data-target="overviewSection">✨ Overview</button>
+        <button class="nav-btn" data-target="chatSection">💬 AI Chat</button>
+        <button class="nav-btn" data-target="dailySection">🫶 Daily Care</button>
+        <button class="nav-btn" data-target="bmiSection">⚖ BMI</button>
+        <button class="nav-btn" data-target="skinSection">🖼 Skin Scan</button>
+        <button class="nav-btn" data-target="mapSection">📍 Nearby Care</button>
+        <button class="nav-btn" data-target="studySection">📘 Health Study</button>
+      </div>
+
+      <div class="notice">
+        <strong>Safety note</strong>
+        <p>This app gives educational support only. In emergencies or for worsening symptoms, get real medical help quickly.</p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <section id="overviewSection" class="panel-grid section-visible">
+        <section class="glass-panel feature-banner floating-card compact-pad">
+          <div>
+<div class="section-chip" id="greetingChip"></div>
+            <h2>Your everyday wellness cockpit</h2>
+            <p>Track water, manage simple medicine reminders, ask health questions, scan skin concerns, and find nearby hospitals or pharmacies with fewer clicks.</p>
+          </div>
+          <div class="feature-banner-actions">
+            <button class="primary-btn quick-nav" data-open="chatSection">Start Chat</button>
+            <button class="ghost-btn quick-nav" data-open="dailySection">Open Daily Care</button>
+          </div>
+        </section>
+
+        <section class="quick-grid">
+          <article class="glass-panel quick-card depth-card quick-nav" data-open="chatSection">
+            <span class="quick-icon">💬</span>
+            <h3>Ask AI</h3>
+            <p>Use text or mic for quick health guidance in your language.</p>
+          </article>
+          <article class="glass-panel quick-card depth-card quick-nav" data-open="dailySection">
+            <span class="quick-icon">💧</span>
+            <h3>Daily Care</h3>
+            <p>Track water intake and medicine tasks for the day.</p>
+          </article>
+          <article class="glass-panel quick-card depth-card quick-nav" data-open="skinSection">
+            <span class="quick-icon">🖼</span>
+            <h3>Skin Scan</h3>
+            <p>Upload a skin image and get careful educational guidance.</p>
+          </article>
+          <article class="glass-panel quick-card depth-card quick-nav" data-open="mapSection">
+            <span class="quick-icon">📍</span>
+            <h3>Nearby Care</h3>
+            <p>Locate hospitals, clinics, doctors, and pharmacies near you.</p>
+          </article>
+        </section>
+      </section>
+
+      <section id="chatSection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <div>
+            <h2>Health Chat Assistant</h2>
+            <span>Use keyboard or mic. Answers follow your selected language.</span>
+          </div>
+          <div class="badge" id="voiceStatusBadge">Mic ready</div>
+        </div>
+        <div id="chatMessages" class="chat-box"></div>
+        <form id="chatForm" class="chat-form">
+          <textarea id="chatInput" placeholder="Describe your symptoms or ask a health question..."></textarea>
+          <div class="chat-actions-row">
+            <button type="button" id="micBtn" class="ghost-btn mic-btn">🎙️ Speak</button>
+            <button type="button" id="speakReplyBtn" class="ghost-btn">🔊 Read last reply</button>
+            <button type="submit" class="primary-btn">Send</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="dailySection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <div>
+            <h2>Daily Care Dashboard</h2>
+            <span>Designed for everyday life with simple health habits and reminders.</span>
+          </div>
+          <div class="section-chip" id="todayDateChip">Today</div>
+        </div>
+
+        <div class="daily-grid">
+          <article class="tool-card depth-card">
+            <div class="tool-head">
+              <h3>💧 Water Tracker</h3>
+              <span id="waterProgressText">0 / 8 glasses</span>
+            </div>
+            <div class="progress-shell">
+              <div id="waterProgressBar" class="progress-bar"></div>
+            </div>
+            <div class="water-actions">
+              <button type="button" id="addWaterBtn" class="primary-btn">+ Add Glass</button>
+              <button type="button" id="resetWaterBtn" class="ghost-btn">Reset</button>
+            </div>
+          </article>
+
+          <article class="tool-card depth-card">
+            <div class="tool-head">
+              <h3>💊 Medicine Planner</h3>
+              <span>Local checklist</span>
+            </div>
+            <form id="medicineForm" class="mini-form">
+              <input id="medicineInput" type="text" placeholder="Add medicine or vitamin">
+              <button type="submit" class="primary-btn">Add</button>
+            </form>
+            <div id="medicineList" class="task-list empty-state slim-empty">No medicines added yet.</div>
+          </article>
+
+          <article class="tool-card depth-card">
+            <div class="tool-head">
+              <h3>🧘 Wellness Focus</h3>
+              <span>Small actions, daily impact</span>
+            </div>
+            <div id="dailyFocusCard" class="focus-card"></div>
+            <button type="button" id="refreshFocusBtn" class="ghost-btn full-btn">Refresh Tip</button>
+          </article>
+        </div>
+      </section>
+
+      <section id="bmiSection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <h2>BMI Calculator</h2>
+          <span>Quick body mass index estimate</span>
+        </div>
+        <form id="bmiForm" class="form-grid two-col">
+          <label>
+            Height (cm)
+            <input type="number" id="heightCm" min="1" step="0.1" placeholder="170" required>
+          </label>
+          <label>
+            Weight (kg)
+            <input type="number" id="weightKg" min="1" step="0.1" placeholder="65" required>
+          </label>
+          <button type="submit" class="primary-btn">Calculate BMI</button>
+        </form>
+        <div id="bmiResult" class="result-box empty-state">Enter height and weight to calculate BMI.</div>
+      </section>
+
+      <section id="skinSection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <h2>Skin Scan</h2>
+          <span>Upload a photo and add short notes for educational guidance.</span>
+        </div>
+        <form id="skinForm" class="form-grid">
+          <label>
+            Upload image
+            <input type="file" id="skinImage" accept="image/png,image/jpeg,image/jpg,image/webp" required>
+          </label>
+          <label>
+            Symptoms / notes
+            <textarea id="skinSymptoms" placeholder="Example: itching, redness, dryness, pain"></textarea>
+          </label>
+          <button type="submit" class="primary-btn">Scan Image</button>
+        </form>
+        <div id="skinPreviewWrap" class="preview-wrap hidden">
+          <img id="skinPreview" alt="Skin preview">
+        </div>
+        <div id="skinResult" class="result-box empty-state">Upload an image to get educational guidance.</div>
+      </section>
+
+      <section id="mapSection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <h2>Nearby Care Finder</h2>
+          <span>Find hospitals, clinics, pharmacies, and doctors near you.</span>
+        </div>
+        <div class="map-controls">
+          <select id="placeType">
+            <option value="hospital">Hospitals</option>
+            <option value="clinic">Clinics</option>
+            <option value="pharmacy">Pharmacies</option>
+            <option value="doctors">Doctors</option>
+          </select>
+          <select id="radiusKm">
+            <option value="3">3 km</option>
+            <option value="5">5 km</option>
+            <option value="10">10 km</option>
+            <option value="20">20 km</option>
+            <option value="50">50 km</option>
+          </select>
+          <button id="findNearbyBtn" class="primary-btn" type="button">Use My Location</button>
+        </div>
+        <div id="map"></div>
+        <div id="mapResults" class="map-results empty-state">Use your location to load nearby medical places.</div>
+      </section>
+
+      <section id="studySection" class="glass-panel panel section-hidden floating-card">
+        <div class="panel-header">
+          <h2>Basic Health Study</h2>
+          <span>Beginner-friendly health notes</span>
+        </div>
+        <div class="study-grid">
+          {% for topic in health_topics %}
+          <article class="study-card depth-card">
+            <h3>{{ topic.icon }} {{ topic.title }}</h3>
+            <ul>
+              {% for point in topic.points %}
+              <li>{{ point }}</li>
+              {% endfor %}
+            </ul>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    window.MEDIASSIST_BOOT = {
+      userName: {{ user_name|tojson }},
+      userEmail: {{ user_email|tojson }}
+    };
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
