@@ -32,11 +32,8 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
 ALLOWED_IMAGE_FORMATS = {"PNG", "JPEG", "WEBP"}
 SUPPORTED_LANGUAGES = {
     "en": "English",
-    "hi": "Hindi",
     "mr": "Marathi",
-    "es": "Spanish",
-    "fr": "French",
-    "de": "German",
+    "hi": "Hindi",
 }
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
@@ -341,8 +338,23 @@ def build_chat_fallback(message: str, language_name: str) -> dict:
     }
 
 
+# ---------------- INTRO PAGE ----------------
 @app.get("/")
-def home():
+def intro_page():
+    return render_template("intro.html")
+
+
+# ---------------- LOGIN PAGE ----------------
+@app.get("/login")
+def login_page():
+    if is_logged_in():
+        return redirect(url_for("main_home"))
+    return render_template("login.html")
+
+
+# ---------------- MAIN APP PAGE ----------------
+@app.get("/home")
+def main_home():
     if not is_logged_in():
         return redirect(url_for("login_page"))
     return render_template(
@@ -352,13 +364,6 @@ def home():
         user_name=session.get("user_name", "Guest"),
         user_email=session.get("user_email", ""),
     )
-
-
-@app.get("/login")
-def login_page():
-    if is_logged_in():
-        return redirect(url_for("home"))
-    return render_template("login.html")
 
 
 @app.get("/health")
@@ -422,7 +427,11 @@ def login_api():
 
     session["user_name"] = user.get("name")
     session["user_email"] = user.get("email")
-    return jsonify({"message": "Login successful.", "user": {"name": user.get("name"), "email": user.get("email")}})
+    return jsonify({
+        "message": "Login successful.",
+        "user": {"name": user.get("name"), "email": user.get("email")},
+        "redirect": "/home"
+    })
 
 
 @app.post("/api/auth/logout")
