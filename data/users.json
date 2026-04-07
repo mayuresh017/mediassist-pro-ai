@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "id": "caa18f2fd9404000a395174e8687d704",
+    "name": "jhdrgg",
+    "email": "hrishi1@gmail.com",
+    "password_hash": "scrypt:32768:8:1$t7FmesG90xE4VJ9T$d8ed07dd5170414c270f3c9bb50571d02da9ea7bc8d6cfadbc4a44432e1743aaa8b5c5530e4957d07443cba1e6d1548651a3fc9591f45f85b106e3eefe78105f"
+  }
+]
